@@ -22,6 +22,9 @@ class CookieStorage {
   }
 
   getItem(key) {
+    if (typeof global !== 'undefined') {
+      return global.expressRequestCookies[key];
+    }
     const cookies = parseCookies(this._getCookie());
     return cookies.hasOwnProperty(key) ? cookies[key] : null;
   }

@@ -693,6 +693,9 @@ CookieStorage.prototype.setItem = function setItem (key, value) {
 };
 
 CookieStorage.prototype.getItem = function getItem (key) {
+  if (typeof global !== 'undefined') {
+    return global.expressRequestCookies[key];
+  }
   var cookies = parseCookies(this._getCookie());
   return cookies.hasOwnProperty(key) ? cookies[key] : null;
 };
