@@ -693,7 +693,7 @@ CookieStorage.prototype.setItem = function setItem (key, value) {
 };
 
 CookieStorage.prototype.getItem = function getItem (key) {
-  if (typeof global !== 'undefined') {
+  if (typeof global !== 'undefined' && global.expressRequestCookies) {
     return global.expressRequestCookies[key];
   }
   var cookies = parseCookies(this._getCookie());
