@@ -1,13 +1,14 @@
 import {
   objectExtend,
   formatCookie,
-  parseCookies
+  parseCookies,
+  getLocationHostname
 } from '../utils.js';
 
 class CookieStorage {
   constructor(defaultOptions) {
     this._defaultOptions = objectExtend({
-      domain: window.location.hostname,
+      domain: getLocationHostname(),
       expires: null,
       path: '/',
       secure: false
