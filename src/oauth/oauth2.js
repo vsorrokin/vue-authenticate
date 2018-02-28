@@ -87,7 +87,7 @@ export default class OAuth2 {
           payload[key] = oauth.code
           break
         case 'access_token':
-          payload[key] = oauth.code
+          payload[key] = oauth.access_token
           break
         case 'clientId':
           payload[key] = this.providerConfig.clientId

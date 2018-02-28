@@ -1104,7 +1104,7 @@ OAuth2.prototype.exchangeForToken = function exchangeForToken (oauth, userData) 
         payload[key] = oauth.code;
         break
       case 'access_token':
-        payload[key] = oauth.code;
+        payload[key] = oauth.access_token;
         break
       case 'clientId':
         payload[key] = this$1.providerConfig.clientId;
