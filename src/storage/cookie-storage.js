@@ -22,8 +22,10 @@ class CookieStorage {
   }
 
   getItem(key) {
-    if (this._defaultOptions.serverStore && this._defaultOptions.serverStore.cookies) {
-      return this._defaultOptions.serverStore.cookies[key];
+    if (this._defaultOptions.serverStore &&
+  		  this._defaultOptions.serverStore() &&
+  			this._defaultOptions.serverStore().cookies) {
+      return this._defaultOptions.serverStore().cookies[key];
     }
     const cookies = parseCookies(this._getCookie());
     return cookies.hasOwnProperty(key) ? cookies[key] : null;

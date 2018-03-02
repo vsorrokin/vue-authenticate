@@ -693,8 +693,10 @@ CookieStorage.prototype.setItem = function setItem (key, value) {
 };
 
 CookieStorage.prototype.getItem = function getItem (key) {
-  if (this._defaultOptions.serverStore && this._defaultOptions.serverStore.cookies) {
-    return this._defaultOptions.serverStore.cookies[key];
+  if (this._defaultOptions.serverStore &&
+  		this._defaultOptions.serverStore() &&
+  			this._defaultOptions.serverStore().cookies) {
+    return this._defaultOptions.serverStore().cookies[key];
   }
   var cookies = parseCookies(this._getCookie());
   return cookies.hasOwnProperty(key) ? cookies[key] : null;
