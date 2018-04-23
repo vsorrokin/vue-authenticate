@@ -1261,7 +1261,7 @@ VueAuthenticate.prototype.setToken = function setToken (response) {
   if (response[this.options.responseDataKey]) {
     response = response[this.options.responseDataKey];
   }
-    
+
   var token;
   if (response.access_token) {
     if (isObject(response.access_token) && isObject(response.access_token[this.options.responseDataKey])) {
@@ -1275,7 +1275,7 @@ VueAuthenticate.prototype.setToken = function setToken (response) {
     token = response[this.options.tokenName];
   }
 
-  if (token) {
+  if (token && typeof token === 'string') {
     this.storage.setItem(this.tokenName, token);
   }
 };
@@ -1291,7 +1291,7 @@ VueAuthenticate.prototype.getPayload = function getPayload () {
     } catch (e) {}
   }
 };
-  
+
 /**
  * Login user using email and password
  * @param{Object} user         User data
@@ -1364,7 +1364,7 @@ VueAuthenticate.prototype.logout = function logout (requestOptions) {
 
 /**
  * Authenticate user using authentication provider
- * 
+ *
  * @param{String} provider     Provider name
  * @param{Object} userData     User data
  * @param{Object} requestOptions Request options
