@@ -97,11 +97,11 @@ export default class VueAuthenticate {
     if (response[this.options.responseDataKey]) {
       response = response[this.options.responseDataKey]
     }
-    
+
     const responseTokenPath = tokenPath || this.options.tokenPath
     const token = getObjectProperty(response, responseTokenPath)
 
-    if (token) {
+    if (token && typeof token === 'string') {
       this.storage.setItem(this.tokenName, token)
     }
   }
@@ -117,7 +117,7 @@ export default class VueAuthenticate {
       } catch (e) {}
     }
   }
-  
+
   /**
    * Login user using email and password
    * @param  {Object} user           User data
@@ -185,7 +185,7 @@ export default class VueAuthenticate {
 
   /**
    * Authenticate user using authentication provider
-   * 
+   *
    * @param  {String} provider       Provider name
    * @param  {Object} userData       User data
    * @return {Promise}               Request promise

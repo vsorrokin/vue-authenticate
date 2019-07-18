@@ -2,14 +2,15 @@ import { $document } from '../globals.js';
 import {
   objectExtend,
   formatCookie,
-  parseCookies
+  parseCookies,
+  getLocationHostname
 } from '../utils.js';
 import { getCookieDomainUrl } from '../options.js';
 
 class CookieStorage {
   constructor(defaultOptions) {
     this._defaultOptions = objectExtend({
-      domain: getCookieDomainUrl(),
+      domain: getLocationHostname(),
       expires: null,
       path: '/',
       secure: false
@@ -23,6 +24,11 @@ class CookieStorage {
   }
 
   getItem(key) {
+    if (this._defaultOptions.serverStore &&
+  		  this._defaultOptions.serverStore() &&
+  			this._defaultOptions.serverStore().cookies) {
+      return this._defaultOptions.serverStore().cookies[key];
+    }
     const cookies = parseCookies(this._getCookie());
     return cookies.hasOwnProperty(key) ? cookies[key] : null;
   }
@@ -41,7 +47,7 @@ class CookieStorage {
     try {
       return $document.cookie === 'undefined' ? '' : $document.cookie
     } catch (e) {}
-    
+
     return '';
   }
 

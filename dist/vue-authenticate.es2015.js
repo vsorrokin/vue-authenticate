@@ -31,6 +31,16 @@ if (typeof Object.assign != 'function') {
   };
 }
 
+function getLocationOrigin() {
+  if (typeof window === 'undefined') { return ''; }
+  return window.location.origin;
+}
+
+function getLocationHostname() {
+  if (typeof window === 'undefined') { return ''; }
+  return window.location.hostname;
+}
+
 function camelCase(name) {
   return name.replace(/([\:\-\_]+(.))/g, function (_, separator, letter, offset) {
     return offset ? letter.toUpperCase() : letter;
@@ -81,10 +91,10 @@ function objectExtend(a, b) {
 
 /**
  * Assemble url from two segments
- * 
+ *
  * @author Sahat Yalkabov <https://github.com/sahat>
  * @copyright Method taken from https://github.com/sahat/satellizer
- * 
+ *
  * @param  {String} baseUrl Base url
  * @param  {String} url     URI
  * @return {String}
@@ -106,10 +116,10 @@ function joinUrl(baseUrl, url) {
 
 /**
  * Get full path based on current location
- * 
+ *
  * @author Sahat Yalkabov <https://github.com/sahat>
  * @copyright Method taken from https://github.com/sahat/satellizer
- * 
+ *
  * @param  {Location} location
  * @return {String}
  */
@@ -122,10 +132,10 @@ function getFullUrlPath(location) {
 
 /**
  * Parse query string variables
- * 
+ *
  * @author Sahat Yalkabov <https://github.com/sahat>
  * @copyright Method taken from https://github.com/sahat/satellizer
- * 
+ *
  * @param  {String} Query string
  * @return {String}
  */
@@ -147,7 +157,7 @@ function parseQueryString(str) {
  * Decode base64 string
  * @author Sahat Yalkabov <https://github.com/sahat>
  * @copyright Method taken from https://github.com/sahat/satellizer
- * 
+ *
  * @param  {String} str base64 encoded string
  * @return {Object}
  */
@@ -527,27 +537,10 @@ var $window = (typeof window !== undefined)
   ? window
   : fakeWindow;
 
-function getCookieDomainUrl() {
-  try {
-    return $window.location.hostname
-  } catch (e) {}
-
-  return '';
-}
-
-function getRedirectUri(uri) {
-  try {
-    return (!isUndefined(uri))
-      ? ("" + ($window.location.origin) + uri)
-      : $window.location.origin
-  } catch (e) {}
-
-  return uri || null;
-}
-
 /**
  * Default configuration
  */
+
 var defaultOptions = {
   baseUrl: null,
   tokenPath: 'access_token',
@@ -561,7 +554,7 @@ var defaultOptions = {
   storageType: 'localStorage',
   storageNamespace: 'vue-authenticate',
   cookieStorage: {
-    domain: getCookieDomainUrl(),
+    domain: getLocationHostname(),
     path: '/',
     secure: false
   },
@@ -592,7 +585,7 @@ var defaultOptions = {
       name: 'facebook',
       url: '/auth/facebook',
       authorizationEndpoint: 'https://www.facebook.com/v2.5/dialog/oauth',
-      redirectUri: getRedirectUri('/'),
+      redirectUri: getLocationOrigin() + '/',
       requiredUrlParams: ['display', 'scope'],
       scope: ['email'],
       scopeDelimiter: ',',
@@ -605,7 +598,7 @@ var defaultOptions = {
       name: 'google',
       url: '/auth/google',
       authorizationEndpoint: 'https://accounts.google.com/o/oauth2/auth',
-      redirectUri: getRedirectUri(),
+      redirectUri: getLocationOrigin(),
       requiredUrlParams: ['scope'],
       optionalUrlParams: ['display'],
       scope: ['profile', 'email'],
@@ -620,7 +613,7 @@ var defaultOptions = {
       name: 'github',
       url: '/auth/github',
       authorizationEndpoint: 'https://github.com/login/oauth/authorize',
-      redirectUri: getRedirectUri(),
+      redirectUri: getLocationOrigin(),
       optionalUrlParams: ['scope'],
       scope: ['user:email'],
       scopeDelimiter: ' ',
@@ -632,7 +625,7 @@ var defaultOptions = {
       name: 'instagram',
       url: '/auth/instagram',
       authorizationEndpoint: 'https://api.instagram.com/oauth/authorize',
-      redirectUri: getRedirectUri(),
+      redirectUri: getLocationOrigin(),
       requiredUrlParams: ['scope'],
       scope: ['basic'],
       scopeDelimiter: '+',
@@ -644,7 +637,7 @@ var defaultOptions = {
       name: 'twitter',
       url: '/auth/twitter',
       authorizationEndpoint: 'https://api.twitter.com/oauth/authenticate',
-      redirectUri: getRedirectUri(),
+      redirectUri: getLocationOrigin(),
       oauthType: '1.0',
       popupOptions: { width: 495, height: 645 }
     },
@@ -653,7 +646,7 @@ var defaultOptions = {
       name: 'bitbucket',
       url: '/auth/bitbucket',
       authorizationEndpoint: 'https://bitbucket.org/site/oauth2/authorize',
-      redirectUri: getRedirectUri('/'),
+      redirectUri: getLocationOrigin() + '/',
       optionalUrlParams: ['scope'],
       scope: ['email'],
       scopeDelimiter: ' ',
@@ -665,7 +658,7 @@ var defaultOptions = {
       name: 'linkedin',
       url: '/auth/linkedin',
       authorizationEndpoint: 'https://www.linkedin.com/oauth/v2/authorization',
-      redirectUri: getRedirectUri(),
+      redirectUri: getLocationOrigin(),
       requiredUrlParams: ['state'],
       scope: ['r_emailaddress'],
       scopeDelimiter: ' ',
@@ -678,7 +671,7 @@ var defaultOptions = {
       name: 'live',
       url: '/auth/live',
       authorizationEndpoint: 'https://login.live.com/oauth20_authorize.srf',
-      redirectUri: getRedirectUri(),
+      redirectUri: getLocationOrigin(),
       requiredUrlParams: ['display', 'scope'],
       scope: ['wl.emails'],
       scopeDelimiter: ' ',
@@ -691,7 +684,7 @@ var defaultOptions = {
       name: null,
       url: '/auth/oauth1',
       authorizationEndpoint: null,
-      redirectUri: getRedirectUri(),
+      redirectUri: getLocationOrigin(),
       oauthType: '1.0',
       popupOptions: null
     },
@@ -700,7 +693,7 @@ var defaultOptions = {
       name: null,
       url: '/auth/oauth2',
       clientId: null,
-      redirectUri: getRedirectUri(),
+      redirectUri: getLocationOrigin(),
       authorizationEndpoint: null,
       defaultUrlParams: ['response_type', 'client_id', 'redirect_uri'],
       requiredUrlParams: null,
@@ -723,7 +716,7 @@ var defaultOptions = {
 
 var CookieStorage = function CookieStorage(defaultOptions) {
   this._defaultOptions = objectExtend({
-    domain: getCookieDomainUrl(),
+    domain: getLocationHostname(),
     expires: null,
     path: '/',
     secure: false
@@ -737,6 +730,11 @@ CookieStorage.prototype.setItem = function setItem (key, value) {
 };
 
 CookieStorage.prototype.getItem = function getItem (key) {
+  if (this._defaultOptions.serverStore &&
+  		this._defaultOptions.serverStore() &&
+  			this._defaultOptions.serverStore().cookies) {
+    return this._defaultOptions.serverStore().cookies[key];
+  }
   var cookies = parseCookies(this._getCookie());
   return cookies.hasOwnProperty(key) ? cookies[key] : null;
 };
@@ -755,7 +753,7 @@ CookieStorage.prototype._getCookie = function _getCookie () {
   try {
     return $document.cookie === 'undefined' ? '' : $document.cookie
   } catch (e) {}
-    
+
   return '';
 };
 
@@ -1103,11 +1101,13 @@ OAuth2.prototype.init = function init (userData) {
   var url = [this.providerConfig.authorizationEndpoint, this._stringifyRequestParams()].join('?');
 
   this.oauthPopup = new OAuthPopup(url, this.providerConfig.name, this.providerConfig.popupOptions);
-    
+
   return new Promise(function (resolve, reject) {
     this$1.oauthPopup.open(this$1.providerConfig.redirectUri).then(function (response) {
-      if (this$1.providerConfig.responseType === 'token' || !this$1.providerConfig.url) {
-        return resolve(response)
+      if (!this$1.providerConfig.needToExchangeToken) {
+        if (this$1.providerConfig.responseType === 'token' || !this$1.providerConfig.url) {
+          return resolve(response)
+        }
       }
 
       if (response.state && response.state !== this$1.storage.getItem(stateName)) {
@@ -1125,7 +1125,7 @@ OAuth2.prototype.init = function init (userData) {
  * Exchange temporary oauth data for access token
  * @author Sahat Yalkabov <https://github.com/sahat>
  * @copyright Method taken from https://github.com/sahat/satellizer
- * 
+ *
  * @param{[type]} oauth  [description]
  * @param{[type]} userData [description]
  * @return {[type]}        [description]
@@ -1141,6 +1141,9 @@ OAuth2.prototype.exchangeForToken = function exchangeForToken (oauth, userData) 
     switch(key) {
       case 'code':
         payload[key] = oauth.code;
+        break
+      case 'access_token':
+        payload[key] = oauth.access_token;
         break
       case 'clientId':
         payload[key] = this$1.providerConfig.clientId;
@@ -1173,7 +1176,7 @@ OAuth2.prototype.exchangeForToken = function exchangeForToken (oauth, userData) 
  * Stringify oauth params
  * @author Sahat Yalkabov <https://github.com/sahat>
  * @copyright Method taken from https://github.com/sahat/satellizer
- * 
+ *
  * @return {String}
  */
 OAuth2.prototype._stringifyRequestParams = function _stringifyRequestParams () {
@@ -1298,11 +1301,11 @@ VueAuthenticate.prototype.setToken = function setToken (response, tokenPath) {
   if (response[this.options.responseDataKey]) {
     response = response[this.options.responseDataKey];
   }
-    
+
   var responseTokenPath = tokenPath || this.options.tokenPath;
   var token = getObjectProperty(response, responseTokenPath);
 
-  if (token) {
+  if (token && typeof token === 'string') {
     this.storage.setItem(this.tokenName, token);
   }
 };
@@ -1318,7 +1321,7 @@ VueAuthenticate.prototype.getPayload = function getPayload () {
     } catch (e) {}
   }
 };
-  
+
 /**
  * Login user using email and password
  * @param{Object} user         User data
@@ -1392,7 +1395,7 @@ VueAuthenticate.prototype.logout = function logout (requestOptions) {
 
 /**
  * Authenticate user using authentication provider
- * 
+ *
  * @param{String} provider     Provider name
  * @param{Object} userData     User data
  * @return {Promise}             Request promise
